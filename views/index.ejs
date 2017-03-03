@@ -1,0 +1,163 @@
+<html>
+<head>
+  <title>My Portfolio</title>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+</head>
+<body>
+
+	<script type="text/javascript">
+  		 <%if(locals.s) {%>
+  			alert("Registeration successful");
+  		<% } %>
+
+
+  		function getCookie(cname) {
+		    var name = cname + "=";
+		    var ca = document.cookie.split(';');
+		    for(var i = 0; i < ca.length; i++) {
+		        var c = ca[i];
+		        while (c.charAt(0) == ' ') {
+		            c = c.substring(1);
+		        }
+		        if (c.indexOf(name) == 0) {
+		            return c.substring(name.length, c.length);
+		        }
+		    }
+		    return "";
+		}
+
+
+  		function register() {
+  			window.location.replace("http://localhost:8080/register");
+  		}
+  		function login(){
+  			window.location.replace("http://localhost:8080/login");	
+  		}
+  		function profile(){
+  			window.location.replace("http://localhost:8080/portfolio");	
+  		}
+
+  		function post(id,mode) {
+  			//alert("hi");
+  			if(mode==1)
+		   		{ 
+		   			method = "post"; // Set method to post by default if not specified.
+		   		    var next = id;
+		   		    var params = {next: next};
+		   		    // The rest of this code assumes you are not using a library.
+		   		    // It can be made less wordy if you use one.
+		   		    var form = document.createElement("form");
+		   		    form.setAttribute("method", method);
+		   		    form.setAttribute("action", "http://localhost:8080/");
+		   		    //form.setAttribute("enctype","multipart/form-data");
+		   
+		   		    for(var key in params) {
+		   		        if(params.hasOwnProperty(key)) {
+		   		            var hiddenField = document.createElement("input");
+		   		            hiddenField.setAttribute("type", "hidden");
+		   		            hiddenField.setAttribute("name", key);
+		   		            hiddenField.setAttribute("value", params[key]);
+		   
+		   		            form.appendChild(hiddenField);
+		   		         }
+		   		    }
+		   
+		   		    document.body.appendChild(form);
+		   		    form.submit();
+		   		}
+		   		else{
+		   			
+		   			if(id==getCookie('id').substring(3, getCookie('id').length-1))
+		   			{
+		   				window.location.replace("http://localhost:8080/portfolio");
+		   				return;
+		   			}
+		   			method = "post"; // Set method to post by default if not specified.
+		   		    var next = id;
+		   		    var params = {next: next};
+		   		    // The rest of this code assumes you are not using a library.
+		   		    // It can be made less wordy if you use one.
+		   		    var form = document.createElement("form");
+		   		    form.setAttribute("method", method);
+		   		    form.setAttribute("action", "http://localhost:8080/visit");
+		   		    //form.setAttribute("enctype","multipart/form-data");
+		   
+		   		    for(var key in params) {
+		   		        if(params.hasOwnProperty(key)) {
+		   		            var hiddenField = document.createElement("input");
+		   		            hiddenField.setAttribute("type", "hidden");
+		   		            hiddenField.setAttribute("name", key);
+		   		            hiddenField.setAttribute("value", params[key]);
+		   
+		   		            form.appendChild(hiddenField);
+		   		         }
+		   		    }
+		   
+		   		    document.body.appendChild(form);
+		   		    form.submit();
+		   		}
+		}
+
+
+  	</script>
+
+
+<div class="w3-top">
+  <div class="w3-black w3-xlarge w3-padding-xlarge" style="max-width:1200px;margin:auto; height: 70px">
+  <%if(locals.uId){%>
+  <div class="w3-left">Hi, <%=uId%></div>
+  <div class="w3-right w3-opennav w3-hover-text-grey" onclick="profile()">Your Portfolio</div>
+  <%}else{%>
+    <div class="w3-left w3-opennav w3-hover-text-grey" onclick="login()">Login</div>
+    <div class="w3-right w3-opennav w3-hover-text-grey" onclick="register()">Register</div>
+    <%}%>
+    
+  </div>
+</div>
+  
+<!-- !PAGE CONTENT! -->
+<div class="w3-main w3-content w3-padding" style="max-width:1200px;margin-top:100px">
+
+  <!-- First Photo Grid-->
+  <%if(results.length==0){%>
+  <label class="w3-label">No portfolios to show</label>
+  <%}%>
+  <%for(var i = (page-1)*10;i<results.length&i<page*10;i++){%>
+  <%if((i%10)%4==0){%>
+  <div class="w3-row-padding w3-padding-16 w3-center">
+  <%}%>
+    <div class="w3-quarter">
+      <img src="<%=results[i].profile_picture%>" alt="PP" style="width:100%">
+      <h3 onclick="post('<%=results[i].id%>',0)"><%=results[i].name%></h3>
+      <%for(var j = 0;j<results[i].works.length;j++){%>
+      <label class="w3-label">-<%=results[i].works[j].title%></label>
+      <br>
+      <%}%>
+    </div>
+  <%if((i%10)%4==3){%>
+  </div>
+  <%}%>
+  <%}%>
+
+  <!-- End page content -->
+  </div>
+
+
+<!-- Pagination -->
+  <div class="w3-center w3-padding-32 w3-bottom">
+    <div class="w3-bar w3-white">
+    <%for(var k = 1; k<=Math.ceil(results.length/10); k++){%>
+      <a class="w3-bar-item w3-button w3-hover-black" onclick="post(<%=k%>,1)"><%=k%></a>
+    <%}%>
+    </div>
+  </div>
+
+  
+
+
+
+</body>
+</html>

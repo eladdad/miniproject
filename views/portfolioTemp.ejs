@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<title>My Portfolio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+<style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
+.w3-sidenav a {padding:20px}
+
+  .r1{
+    display: none;
+    float: left;
+  }
+  .r2{
+    display: none;
+    float: left;
+  }
+#r1:checked ~ .r1{
+    display: block;
+  }
+
+  #r2:checked ~ .r2{
+    display: block;
+  }
+
+</style>
+<body>
+
+<!-- Sidenav (hidden by default) -->
+<nav class="w3-sidenav w3-card-2 w3-top w3-xlarge w3-animate-left" style="display:none;z-index:2;width:40%;min-width:300px" id="mySidenav">
+  <a href="javascript:void(0)" onclick="w3_close()"
+  class="w3-closenav">Close Menu</a>
+  <br><br>
+  <img src="<%= portfolio.profile_picture %>" width="300px" height="300px">
+  <br>
+  <label class="w3-xxlarge"><%= portfolio.name %></label>
+  <br><br>
+  <%if(!locals.visitor){%>
+  <form method="POST" enctype="multipart/form-data">
+    <label >Name of the project:</label>
+      <input class="w3-input" type="text" required name="title"><br><br>
+      <input type="radio" name="radio" id="r1" value="img" onclick="requ()">Screenshot<br>
+      <input type="radio" name="radio" id= "r2" value="link" checked="" onclick="resetImg()">Link to website or code repository
+      <br><br>
+      <div class="r2"><label class="w3-label">Link: </label><input type="url" name="link" id="link" required></div>
+      <div class="r1"><label class="w3-label">Screenshot: </label><input type="file" name="img" id="img" accept="image/*" class="w3-input"></div>
+      <br><br>
+      <input type="submit" value="Add project" class="w3-button">
+  </form>
+  <%}%>
+  <br><br>
+  <a onclick="home()" class="w3-closenav">View all portfolios</a>
+  <%if(!locals.visitor){%>
+  <a onclick="logout()" class="w3-closenav">Logout</a>
+  <%}%>
+</nav>
+
+<!-- Top menu -->
+<div class="w3-top">
+  <div class="w3-white w3-xlarge w3-padding-xlarge" style="max-width:1200px;margin:auto">
+    <div class="w3-left w3-opennav w3-hover-text-grey" onclick="w3_open()">☰</div>
+  </div>
+</div>
+  
+<!-- !PAGE CONTENT! -->
+<div class="w3-main w3-content w3-padding" style="max-width:1200px;margin-top:100px">
+
+  <!-- First Photo Grid-->
+  <%for(var i = 0;i<projects.length;i++){%>
+  <%if(i%4==0){%>
+  <div class="w3-row-padding w3-padding-16 w3-center">
+  <%}%>
+    <div class="w3-quarter w3-card-2">
+      <%if(projects[i].screenshot!=''){%>
+      <img src="<%=projects[i].screenshot%>" alt="Screenshot" style="width:100%">
+      <%}%>
+      <h3 ><%=projects[i].title%></h3>
+      <%if(projects[i].URL!=''){%>
+      <a href="<%=projects[i].URL%>"><%=projects[i].URL%></a>
+      <%}%>
+    </div>
+  <%if(i%4==3){%>
+  </div>
+  <%}%>
+  <%}%>
+  
+  <!-- Second Photo Grid-->
+  
+
+
+  
+
+  
+
+<!-- End page content -->
+</div>
+
+<script>
+// Script to open and close sidenav
+function w3_open() {
+    document.getElementById("mySidenav").style.display = "block";
+}
+ 
+function w3_close() {
+    document.getElementById("mySidenav").style.display = "none";
+}
+
+function requ(){
+    document.getElementById('link').value = "";
+    document.getElementById('img').setAttribute('required','');
+    document.getElementById('link').removeAttribute('required');
+  }
+  function resetImg(){
+    document.getElementById('img').value="";
+
+    document.getElementById('link').setAttribute('required','');
+    document.getElementById('img').removeAttribute('required');
+  }
+  function logout(){
+    document.cookie = "id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    window.location.replace("http://localhost:8080/");
+  }
+  function home(){
+    window.location.replace("http://localhost:8080/");
+  }
+</script>
+
+</body>
+</html>
