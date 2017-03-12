@@ -31,13 +31,13 @@
 
 
   		function register() {
-  			window.location.replace("http://localhost:8080/register");
+  			window.location.replace("http://52.11.120.182:8080/register");
   		}
   		function login(){
-  			window.location.replace("http://localhost:8080/login");	
+  			window.location.replace("http://52.11.120.182:8080/login");	
   		}
   		function profile(){
-  			window.location.replace("http://localhost:8080/portfolio");	
+  			window.location.replace("http://52.11.120.182:8080/portfolio");	
   		}
 
   		function post(id,mode) {
@@ -51,7 +51,7 @@
 		   		    // It can be made less wordy if you use one.
 		   		    var form = document.createElement("form");
 		   		    form.setAttribute("method", method);
-		   		    form.setAttribute("action", "http://localhost:8080/");
+		   		    form.setAttribute("action", "http://52.11.120.182:8080/");
 		   		    //form.setAttribute("enctype","multipart/form-data");
 		   
 		   		    for(var key in params) {
@@ -72,7 +72,7 @@
 		   			
 		   			if(id==getCookie('id').substring(3, getCookie('id').length-1))
 		   			{
-		   				window.location.replace("http://localhost:8080/portfolio");
+		   				window.location.replace("http://52.11.120.182:8080/portfolio");
 		   				return;
 		   			}
 		   			method = "post"; // Set method to post by default if not specified.
